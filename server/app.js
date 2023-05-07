@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken'
 import cors from 'cors'
 import { Server } from 'socket.io';
 
+
 const io = new Server(9090, {
     cors: {
         origin: 'http://localhost:3000',
@@ -15,10 +16,10 @@ import './db/connection.js'
 
 // Import files 
 import Users from './models/Users.js';
-import Conversations from './models/conversations.js';
+import Conversations from './models/Conversations.js';
 import Messages from './models/Messages.js';
 
-  
+
 const port = process.env.port || 9000;
 
 
@@ -34,20 +35,20 @@ io.on('connection', (socket) => {
         }
     });
 
-    socket.on('sendMessage',async ({senderId,receiverId,message,conversationId}) => {
+    socket.on('sendMessage', async ({ senderId, receiverId, message, conversationId }) => {
         const receiver = users.find(user => user.userId === receiverId); //  in users[]
         const sender = users.find(user => user.userId === senderId); // users[]
         const user = await Users.findById(senderId); // finding in db
-        if(receiver){
-            io.to(receiver.socketId).to(sender.socketId).emit('getMessage',{
+        if (receiver) {
+            io.to(receiver.socketId).to(sender.socketId).emit('getMessage', {
                 senderId,
                 receiverId,
                 message,
                 conversationId,
-                user : {id:user._id,fullName : user.fullName,email : user.email}
+                user: { id: user._id, fullName: user.fullName, email: user.email }
             });
-        }else{
-            io.to(sender.socketId).emit('getMessage',{
+        } else {
+            io.to(sender.socketId).emit('getMessage', {
                 senderId,
                 receiverId,
                 message,
