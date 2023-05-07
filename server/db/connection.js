@@ -1,13 +1,14 @@
+import 'dotenv/config'
 import mongoose from "mongoose";
-const uri = "mongodb+srv://admin:admin123@cluster0.toegsap.mongodb.net/?retryWrites=true&w=majority";
+
+const uri = process.env.MONGO_URI;
 
 
 
-mongoose.connect(uri,{
-    useNewUrlParser : true,
-    useUnifiedTopology:true
-}).then(()=>
-{
+mongoose.connect(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}).then(() => {
     console.log("Connected to DB");
 }).catch((err) => {
     console.log(err);
