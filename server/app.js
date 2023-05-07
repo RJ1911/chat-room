@@ -5,7 +5,7 @@ import cors from 'cors'
 import { Server } from 'socket.io';
 
 
-const io = new Server(9090, {
+const io = new Server( process.env.port || 50000, {
     cors: {
         origin: 'http://localhost:3000',
     },
